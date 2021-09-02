@@ -237,11 +237,11 @@ class ProductApiController extends Controller
 
         if($request->hasFile('images'))
         {
-            
+
             if($request->hasFile('images'))
             {   foreach ($request->file('images') as $image) {
-                
-             
+
+
                     $name = time().$image->getClientOriginalName();
                     $path = $image->move('multipleImages/', $name);
 
@@ -249,7 +249,7 @@ class ProductApiController extends Controller
                         'product_id' => $product->id,
                         'image' => 'multipleImages/'.$name
                     ]);
-                 
+
                       }
             }
         }
@@ -323,7 +323,7 @@ class ProductApiController extends Controller
             'brand_id'=>'required',
             'color' => 'required',
             'price'=>'required',
-            'short_description'=>'required',
+            // 'short_description'=>'required',
             'vendor_id' => 'required',
             'product_id' => 'required',
             'size' => 'required',
@@ -557,7 +557,7 @@ class ProductApiController extends Controller
             $products = $products->whereHas('category', function($q) {
                 $q->where('category_id', (int)request('category_id'));
             });
-            
+
         }
 
         if (!empty(request('brand_id')))
@@ -582,18 +582,18 @@ class ProductApiController extends Controller
         {
                     if (!empty(request('min_price'))){
            $min=(int)$request->min_price;
-                       
+
                     }
                     else
                     {
                      $min=(int)0;
-              
+
                     }
             $max=(int)$request->max_price;
-         
+
             $products = $products->whereBetween('price', [$min, $max]);
-        
-           
+
+
         }
 
         $products = $products->with('images', 'vendor')->get();
